@@ -1,0 +1,191 @@
+<title>ステート比較表</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: header with language switch, summary strip, comparison table (states as columns), roster bars. English is the default; .ja content shows when body[data-lang="ja"]. */
+:root{
+  --bg:#f3f5f8; --surface:#ffffff; --fg:#17202e; --muted:#5b6678; --line:#d9dee7;
+  --accent:#2b5fd9; --good:#1b7f4b; --bad:#b3372b; --warn:#9a6a00;
+  --good-bg:#e4f4ea; --bad-bg:#fbe9e6; --warn-bg:#fbf1d9; --bar:#2b5fd9; --bar2:#8aa6e8; --on-accent:#ffffff;
+  --font:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#10151d; --surface:#18202b; --fg:#e6ebf3; --muted:#9aa6b8; --line:#2a3443;
+  --accent:#7ea2ff; --good:#5fd394; --bad:#ff8f80; --warn:#f0c15a;
+  --good-bg:#163425; --bad-bg:#3a1f1c; --warn-bg:#3a3014; --bar:#7ea2ff; --bar2:#41578f; --on-accent:#10151d; color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#10151d; --surface:#18202b; --fg:#e6ebf3; --muted:#9aa6b8; --line:#2a3443;
+  --accent:#7ea2ff; --good:#5fd394; --bad:#ff8f80; --warn:#f0c15a;
+  --good-bg:#163425; --bad-bg:#3a1f1c; --warn-bg:#3a3014; --bar:#7ea2ff; --bar2:#41578f; --on-accent:#10151d; color-scheme:dark;}
+body{background:var(--bg);color:var(--fg);font-family:var(--font);line-height:1.7;padding-inline:16px;padding-block:28px 48px}
+body[data-lang="en"] .ja, body[data-lang="ja"] .en{display:none!important}
+.wrap{max-width:1040px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}
+.top > div{min-width:0}
+h1{font-size:1.6rem;margin:0;text-wrap:balance}
+h2{font-size:1.15rem;margin:0 0 10px}
+.lead{color:var(--muted);margin:6px 0 0;max-width:62ch}
+.lang{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;flex:none}
+.lang button{font:inherit;font-size:.85rem;font-weight:700;padding:6px 16px;border:0;background:var(--surface);color:var(--muted);cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent)}
+.lang button:focus-visible{outline:2px solid var(--accent);outline-offset:-3px}
+.note{background:var(--warn-bg);border-radius:6px;padding:10px 14px;font-size:.88rem;max-width:80ch}
+.sum{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;min-width:0}
+.card h3{margin:0 0 6px;font-size:1.05rem;display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.card h3 small{font-family:var(--mono);font-size:.78rem;color:var(--muted);font-weight:400}
+.card p{margin:0;font-size:.9rem;color:var(--muted)}
+.big{font-family:var(--mono);font-size:1.2rem;font-weight:600}
+.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:760px;font-size:.92rem}
+th,td{padding:12px 14px;vertical-align:top;text-align:left;border-bottom:1px solid var(--line)}
+tbody tr:last-child th,tbody tr:last-child td{border-bottom:0}
+thead th{font-family:var(--mono);font-size:.95rem;background:var(--surface);border-bottom:2px solid var(--accent)}
+tbody th{width:130px;font-weight:700;color:var(--muted);font-size:.82rem;letter-spacing:.04em;background:var(--bg)}
+ul{margin:0;padding-left:1.1em;display:flex;flex-direction:column;gap:3px}
+.pro li::marker{color:var(--good)} .con li::marker{color:var(--bad)}
+.pill{display:inline-block;padding:1px 10px;border-radius:99px;font-size:.8rem;font-weight:500}
+.yes{background:var(--good-bg);color:var(--good)} .unk{background:var(--warn-bg);color:var(--warn)}
+.orig{display:block;color:var(--muted);font-size:.76rem;margin-top:2px;font-weight:400}
+.roster{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.row{display:grid;grid-template-columns:54px 1fr 100px;gap:10px;align-items:center;font-size:.86rem;padding:3px 0}
+.row .n{font-family:var(--mono);font-weight:600}
+.track{height:14px;background:var(--bg);border-radius:3px;overflow:hidden;display:flex}
+.track i{display:block;height:100%;background:var(--bar)}
+.row .v{font-family:var(--mono);text-align:right;font-variant-numeric:tabular-nums}
+.row .v small{color:var(--muted)}
+.foot{color:var(--muted);font-size:.8rem}
+</style>
+<body data-lang="en">
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1><span class="en">State Comparison: 511 / 722 / 725</span><span class="ja">ステート比較表(511 / 722 / 725)</span></h1>
+      <p class="lead"><span class="en">The notes from your spreadsheet, laid out side by side so the states are easy to compare.</span><span class="ja">共有いただいたスプレッドシートのメモを、ステートごとに並べて見比べられるようにしました。</span></p>
+    </div>
+    <div class="lang" role="group" aria-label="Language / 言語">
+      <button type="button" id="btn-en" aria-pressed="true">English</button>
+      <button type="button" id="btn-ja" aria-pressed="false">日本語</button>
+    </div>
+  </header>
+
+  <div class="note">
+    <span class="en">The column headings in the original sheet were merged cells that all read "State", so I could not read them. The headings here (hosting rules, council, NAP, pros, cons, top players) are inferred from the contents. Tell me if any are wrong.</span>
+    <span class="ja">元シートの見出しは、結合セルのため全部「State」と表示されて読み取れませんでした。各列の見出し(開催ルール、評議会、NAP、長所、短所、主要プレイヤー)は中身から推測してつけています。違っていたら教えてください。</span>
+  </div>
+
+  <section class="sum">
+    <div class="card"><h3>State 511 <small><span class="en">little info</span><span class="ja">情報少なめ</span></small></h3>
+      <p class="en">Top 7 alliances sit on the council and all vote. Many complaints about leadership; WK sign-ups halved.</p>
+      <p class="ja">上位7同盟が評議会で議決権を持つ。運営に不満の声が多く、WK参加者が半減。</p></div>
+    <div class="card"><h3>State 722 <small><span class="en">20 players / 31.25B</span><span class="ja">20名 / 31.25B</span></small></h3>
+      <p class="en">Permanent NAP. Still building and not very strong, but growing. Destroyer is FFA once a month.</p>
+      <p class="ja">常時NAP。新しめで勢いは弱いが成長中。Destroyerは月1回FFA。</p></div>
+    <div class="card"><h3>State 725 <small><span class="en">21 players / 32.69B</span><span class="ja">21名 / 32.69B</span></small></h3>
+      <p class="en">Active and growing. Uncle is there. NSW is the largest group with 15 players.</p>
+      <p class="ja">活発で成長中。Uncleさんが在籍。NSWが15名と最大勢力。</p></div>
+  </section>
+
+  <section>
+    <h2><span class="en">Side-by-side comparison</span><span class="ja">項目別の比較</span></h2>
+    <div class="scroll"><table>
+      <thead><tr><th></th><th>State 511</th><th>State 722</th><th>State 725</th></tr></thead>
+      <tbody>
+        <tr><th><span class="en">Hosting rules</span><span class="ja">開催(ホスト)ルール</span></th>
+          <td><ul class="en"><li>Each alliance sets up its own</li><li>Top 7 in the state</li><li>Can opt out of hosting</li><li>Hosted in a state alliance</li><li>8 players per hosting alliance required</li></ul>
+              <ul class="ja"><li>各同盟が自分で設定する</li><li>州内の上位7同盟が対象</li><li>ホストを辞退できる</li><li>州内の同盟が開催する</li><li>ホスト同盟は8人必須</li></ul></td>
+          <td><ul class="en"><li>Each alliance sets up its own</li><li>Top 7 in the state</li><li>Can opt out of hosting</li><li>Hosted in a state alliance</li><li>8 players per hosting alliance required</li></ul>
+              <ul class="ja"><li>各同盟が自分で設定する</li><li>州内の上位7同盟が対象</li><li>ホストを辞退できる</li><li>州内の同盟が開催する</li><li>ホスト同盟は8人必須</li></ul></td>
+          <td><ul class="en"><li>WK is run by a committee</li><li>Hosted in a state alliance (maxed Shell)</li><li>Diamond-level WK</li><li>Top 5 by rank, plus one chosen by vote</li></ul>
+              <ul class="ja"><li>WKは委員会が運営</li><li>州内の同盟が開催(Shellは最大まで強化済み)</li><li>ダイヤモンドレベルのWK</li><li>順位上位5同盟+投票で選ばれる1同盟</li></ul></td></tr>
+        <tr><th><span class="en">Council / leadership</span><span class="ja">評議会・運営体制</span></th>
+          <td><ul class="en"><li>Council of the top 7 by might, no matter what; each has a vote</li><li>Leadership Discord with every R4 in the state</li><li>Alliance rep: 2 members from each alliance</li></ul>
+              <ul class="ja"><li>戦力上位7同盟は必ず評議会入りし、全員が投票権を持つ</li><li>州内の全R4が入るリーダー用Discordがある</li><li>各同盟から2名ずつ代表を出す</li></ul></td>
+          <td><ul class="en"><li>Leadership committee with one from each alliance</li><li>Mud is the top 8 alliances by might</li><li>Council is the top 5 by might plus 2 chosen by vote</li><li>Every R5 is in leadership</li></ul>
+              <ul class="ja"><li>各同盟から1名ずつ出す運営委員会</li><li>Mudは戦力上位8同盟</li><li>評議会は戦力上位5同盟+投票で選ばれる2同盟</li><li>R5は全員リーダー層に入る</li></ul></td>
+          <td><ul class="en"><li>Council alliances must have at least 25 players</li><li>Vote on 2 out of 3 proposals</li><li>Engage in discussions</li></ul>
+              <ul class="ja"><li>評議会の同盟は25人以上が条件</li><li>3つの提案のうち2つで投票する</li><li>議論に参加することが求められる</li></ul></td></tr>
+        <tr><th>NAP</th>
+          <td><span class="en">Tagged and troopless</span><span class="ja">タグあり・兵なしの人が対象</span></td>
+          <td><ul class="en"><li>Permanent NAP, except tagless, troopless or EOS</li><li>On WK weekends, the whole state is NAP</li></ul>
+              <ul class="ja"><li>常時NAP。ただしタグなし、兵なし、EOSの人は除く</li><li>WK開催週末は州全体でNAP</li></ul></td>
+          <td><ul class="en"><li>Tagged players only</li><li>Statewide, during WK weekends only</li></ul>
+              <ul class="ja"><li>タグありの人のみ</li><li>WK開催の週末だけ州全体で適用</li></ul></td></tr>
+        <tr class="pro"><th><span class="en">Pros</span><span class="ja">長所</span></th>
+          <td><ul class="en"><li>No need to move</li><li>Bones is there</li></ul>
+              <ul class="ja"><li>移動しなくてよい</li><li>Bonesさんがいる</li></ul></td>
+          <td><ul class="en"><li>NAP</li><li>Trying to grow</li><li>Destroyer is FFA once a month</li><li>The top 3 have SWPs and must take part in WK</li></ul>
+              <ul class="ja"><li>NAPがある</li><li>成長を目指している</li><li>Destroyerは月1回FFA</li><li>上位3同盟はSWPを持ち、WK参加が必須</li></ul></td>
+          <td><ul class="en"><li>WK committee</li><li>Active and growing state</li><li>Uncle is there</li><li>It was where we were going until FyF landed</li><li>NAP</li><li>Destroyer is weekend only, for those not hit during VC weeks</li><li>SWPs are shared; big SWPs go to those most active in WK</li></ul>
+              <ul class="ja"><li>WK委員会がある</li><li>活発で成長中</li><li>Uncleさんがいる</li><li>FyFが来るまでは、ここに行く予定だった</li><li>NAPがある</li><li>Destroyerは、VC週に攻撃を受けていない人だけが週末に参加</li><li>SWPは共有。大きいSWPはWKで最も活躍した人へ</li></ul></td></tr>
+        <tr class="con"><th><span class="en">Cons</span><span class="ja">短所</span></th>
+          <td><ul class="en"><li>Micromanaged</li><li>Toxic leadership</li><li>Dying state (WK sign-ups dropped by half)</li><li>Uncle will not come back</li></ul>
+              <ul class="ja"><li>細かく管理されすぎる</li><li>リーダーに問題がある</li><li>衰退気味(WK参加登録が半減)</li><li>Uncleさんは戻ってこない</li></ul></td>
+          <td><ul class="en"><li>Still building, not super strong</li><li>Former 511 players, which may or may not be a good thing; established</li><li>RAW does most of the recruiting and talking, and they have only been there 1 month</li><li>Destroyer goes off a list and counts as one team for the achievement</li></ul>
+              <ul class="ja"><li>まだ発展途上で、あまり強くない</li><li>元511の人が多く、良し悪しは不明だが基盤はある</li><li>勧誘や交渉はほぼRAWが担当。来て1か月しか経っていない</li><li>Destroyerはリスト順で、実績は1チーム分扱い</li></ul></td>
+          <td><ul class="en"><li>FyF is there, but it is not in the council or the hosting rotation, so it has no say in how the state runs</li></ul>
+              <ul class="ja"><li>FyFがいるが、評議会にも開催ローテーションにも入っていないため、州の運営に発言権がほぼない</li></ul></td></tr>
+        <tr><th>Mud Spot</th><td><span class="pill yes"><span class="en">Yes</span><span class="ja">あり</span></span></td><td><span class="pill unk"><span class="en">Blank</span><span class="ja">未記入</span></span></td><td><span class="pill yes"><span class="en">Yes</span><span class="ja">あり</span></span></td></tr>
+        <tr><th>Shell</th><td><span class="pill yes"><span class="en">Yes</span><span class="ja">あり</span></span></td><td><span class="pill unk"><span class="en">Blank</span><span class="ja">未記入</span></span></td><td><span class="pill yes"><span class="en">Yes</span><span class="ja">あり</span></span></td></tr>
+        <tr><th><span class="en">Move?</span><span class="ja">移動する?</span></th><td colspan="3"><span class="pill unk"><span class="en">Blank</span><span class="ja">未記入</span></span> <span class="en">The "move?" column was empty in the sheet.</span><span class="ja">シートの「move?」列は空欄でした。</span></td></tr>
+        <tr><th><span class="en">Top players listed</span><span class="ja">主要プレイヤー数</span></th>
+          <td class="big"><span class="en">4</span><span class="ja">4名</span><span class="orig en">no power values given</span><span class="orig ja">戦力の記載なし</span></td>
+          <td class="big"><span class="en">20</span><span class="ja">20名</span></td>
+          <td class="big"><span class="en">21</span><span class="ja">21名</span></td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <h2><span class="en">Top players' power, by alliance</span><span class="ja">主要プレイヤーの戦力(同盟別の合計)</span></h2>
+    <p class="lead" style="margin-bottom:12px">
+      <span class="en">Values are as written in the sheet (for example 1.7B) and summed per alliance. B is read as billion.</span>
+      <span class="ja">数値は元シートの表記(例: 1.7B)をそのまま使い、同盟ごとに合計しました。Bは10億と読んでいます。</span></p>
+    <div class="roster">
+      <div class="card">
+        <h3>State 722 <small><span class="en">20 players, 31.25B total</span><span class="ja">20名 計31.25B</span></small></h3>
+        <div class="row"><span class="n">H2H</span><span class="track"><i style="width:100%"></i></span><span class="v">9.00B <small><span class="en">5</span><span class="ja">5名</span></small></span></div>
+        <div class="row"><span class="n">BBB</span><span class="track"><i style="width:67.7%"></i></span><span class="v">6.09B <small><span class="en">4</span><span class="ja">4名</span></small></span></div>
+        <div class="row"><span class="n">RAW</span><span class="track"><i style="width:58.9%"></i></span><span class="v">5.30B <small><span class="en">4</span><span class="ja">4名</span></small></span></div>
+        <div class="row"><span class="n">A41</span><span class="track"><i style="width:56.3%"></i></span><span class="v">5.07B <small><span class="en">3</span><span class="ja">3名</span></small></span></div>
+        <div class="row"><span class="n">CaT</span><span class="track"><i style="width:36.7%"></i></span><span class="v">3.30B <small><span class="en">2</span><span class="ja">2名</span></small></span></div>
+        <div class="row"><span class="n">DbP</span><span class="track"><i style="width:13.2%"></i></span><span class="v">1.19B <small><span class="en">1</span><span class="ja">1名</span></small></span></div>
+        <div class="row"><span class="n"><span class="en">None</span><span class="ja">無表記</span></span><span class="track"><i style="width:14.4%;background:var(--bar2)"></i></span><span class="v">1.30B <small><span class="en">1</span><span class="ja">1名</span></small></span></div>
+        <p class="foot" style="margin-top:8px"><span class="en">Largest: Russel (H2H) 2.2B, then Jade (A41) 2.17B and TOut (CaT) 2.0B. "None" is John wick son, who has no alliance tag.</span><span class="ja">最大は Russel(H2H)の2.2B、次いで Jade(A41)の2.17B、TOut(CaT)の2.0B。無表記は John wick son。</span></p>
+      </div>
+      <div class="card">
+        <h3>State 725 <small><span class="en">21 players, 32.69B total</span><span class="ja">21名 計32.69B</span></small></h3>
+        <div class="row"><span class="n">NSW</span><span class="track"><i style="width:100%"></i></span><span class="v">23.35B <small><span class="en">15</span><span class="ja">15名</span></small></span></div>
+        <div class="row"><span class="n">WAP</span><span class="track"><i style="width:18.2%"></i></span><span class="v">4.24B <small><span class="en">3</span><span class="ja">3名</span></small></span></div>
+        <div class="row"><span class="n">PF4</span><span class="track"><i style="width:15.8%"></i></span><span class="v">3.70B <small><span class="en">2</span><span class="ja">2名</span></small></span></div>
+        <div class="row"><span class="n">W@R</span><span class="track"><i style="width:6%"></i></span><span class="v">1.40B <small><span class="en">1</span><span class="ja">1名</span></small></span></div>
+        <p class="foot" style="margin-top:8px"><span class="en">Largest: Slim (NSW) 2.32B. Uncle (NSW) is 1.77B. Few alliances, and power is concentrated in NSW.</span><span class="ja">最大は Slim(NSW)の2.32B。Uncle(NSW)は1.77B。同盟数が少なく、NSWに集中しています。</span></p>
+      </div>
+      <div class="card">
+        <h3>State 511 <small><span class="en">4 players</span><span class="ja">4名</span></small></h3>
+        <p>FoF: Bones, KaBoom, RedShirt<br>BRA: Kraken</p>
+        <p class="foot" style="margin-top:8px"><span class="en">No power values are written for this state.</span><span class="ja">戦力の数値は書かれていません。</span></p>
+      </div>
+    </div>
+  </section>
+
+  <p class="foot">
+    <span class="en">States 612, 723, 813, 822 and 831 are in the sheet with a number only and no content. Terms such as WK, SWP, VC, EOS, R4/R5 and NAP are kept as in the original.</span>
+    <span class="ja">612、723、813、822、831 の各ステートは、シートに番号だけあり、内容は空欄です。略称(WK、SWP、VC、EOS、R4/R5、NAP など)は、意味を取り違えないよう原文のままにしてあります。</span></p>
+</div>
+<script>
+(function(){
+  var body=document.body, en=document.getElementById('btn-en'), ja=document.getElementById('btn-ja');
+  function set(l,save){
+    body.setAttribute('data-lang',l);
+    document.documentElement.lang=l;
+    en.setAttribute('aria-pressed',l==='en');
+    ja.setAttribute('aria-pressed',l==='ja');
+    if(save){try{localStorage.setItem('state-compare-lang',l)}catch(e){}}
+  }
+  var saved='en';
+  try{saved=localStorage.getItem('state-compare-lang')==='ja'?'ja':'en'}catch(e){}
+  set(saved,false);
+  en.addEventListener('click',function(){set('en',true)});
+  ja.addEventListener('click',function(){set('ja',true)});
+})();
+</script>
